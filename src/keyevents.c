@@ -360,7 +360,7 @@ void feh_event_handle_stdin(void)
 		keysym = XStringToKeysym(stdin_buf);
 
 	if (window_num && keysym)
-		feh_event_handle_generic(windows[0], is_esc * Mod1Mask, keysym, 0);
+		feh_event_handle_generic(windows[0], is_esc * Mod1Mask, keysym, 0, NULL, 0);
 
 	is_esc = 0;
 }
@@ -383,7 +383,13 @@ void feh_event_handle_keypress(XEvent * ev)
 	}
 
 	kev = (XKeyEvent *) ev;
-	XLookupString(&ev->xkey, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
+	int kbuf_used = Xutf8LookupString(input_context, kev, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
+	if (kbuf_used < sizeof(kbuf)) {
+		kbuf[kbuf_used] = 0;
+	} else {
+		kbuf[19] = 0;
+	}
+	D(("Xutf8LookupString set kbuf = %s, keysym = %08x\n", kbuf, keysym));
 	state = kev->state & (ControlMask | ShiftMask | Mod1Mask | Mod4Mask);
 
 	if (ignore_space(keysym))
@@ -410,7 +416,12 @@ void feh_event_handle_keypress(XEvent * ev)
 	if (winwid == NULL)
 		return;
 
-	feh_event_handle_generic(winwid, state, keysym, 0);
+	if (XFilterEvent(ev, None)) {
+		D(("Event filtered\n"));
+		return;
+	}
+
+	feh_event_handle_generic(winwid, state, keysym, 0, kbuf, kbuf_used);
 }
 
 fehkey *feh_str_to_kb(char *action)
@@ -423,7 +434,7 @@ fehkey *feh_str_to_kb(char *action)
 	return NULL;
 }
 
-void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysym, unsigned int button) {
+void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysym, unsigned int button, char *buf, unsigned int buf_len) {
 	int curr_screen = 0;
 
 	if (winwid->caption_entry && (keysym != NoSymbol)) {
@@ -468,11 +479,14 @@ void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysy
 			winwidget_render_image_cached(winwid);
 			break;
 		default:
-			if (isascii(keysym)) {
-				/* append to caption */
+			/* append to caption */
+			if ((buf != NULL) && buf_len) {
+				ESTRAPPEND(FEH_FILE(winwid->file->data)->caption, buf);
+			} else if (isascii(keysym)) {
+				// TODO update feh_event_handle_stdin to pass buf as well.
 				ESTRAPPEND_CHAR(FEH_FILE(winwid->file->data)->caption, keysym);
-				winwidget_render_image_cached(winwid);
 			}
+			winwidget_render_image_cached(winwid);
 			break;
 		}
 		return;

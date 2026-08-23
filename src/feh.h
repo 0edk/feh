@@ -161,7 +161,7 @@ void setup_stdin(void);
 void restore_stdin(void);
 void feh_event_handle_keypress(XEvent * ev);
 void feh_event_handle_stdin(void);
-void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysym, unsigned int button);
+void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysym, unsigned int button, char *buf, unsigned int buf_len);
 fehkey *feh_str_to_kb(char * action);
 void feh_action_run(feh_file * file, char *action, winwidget winwid);
 char *format_size(double size);
@@ -211,10 +211,10 @@ extern XineramaScreenInfo *xinerama_screens;
 extern int xinerama_screen;
 #endif				/* HAVE_LIBXINERAMA */
 
-/* Thumbnail sizes */
 extern int cmdargc;
 extern char **cmdargv;
 extern Window root;
+extern XIC input_context;
 extern XContext xid_context;
 extern Screen *scr;
 extern unsigned char reset_output;

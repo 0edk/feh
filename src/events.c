@@ -322,7 +322,7 @@ static void feh_event_handle_ButtonPress(XEvent * ev)
 
 	} else {
 		D(("Received other ButtonPress event\n"));
-		feh_event_handle_generic(winwid, state, NoSymbol, button);
+		feh_event_handle_generic(winwid, state, NoSymbol, button, NULL, 0);
 	}
 	return;
 }
@@ -694,7 +694,7 @@ static void feh_event_handle_MotionNotify(XEvent * ev)
 				thumbnail = feh_thumbnail_get_thumbnail_from_coords(x, y);
 				feh_thumbnail_select(winwid, thumbnail);
 			} else {
-				feh_event_handle_generic(winwid, ev->xmotion.state | Mod3Mask, NoSymbol, 0);
+				feh_event_handle_generic(winwid, ev->xmotion.state | Mod3Mask, NoSymbol, 0, NULL, 0);
 			}
 		}
 	}

@@ -44,6 +44,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include <locale.h>
+
 #ifdef HAVE_LIBCURL
 #include <curl/curl.h>
 #endif
@@ -61,6 +63,7 @@ magic_t magic = NULL;
 Display *disp = NULL;
 Visual *vis = NULL;
 Screen *scr = NULL;
+XIC input_context;
 Colormap cm;
 int depth;
 Atom wmDeleteWindow;
@@ -128,6 +131,10 @@ void init_imlib_fonts(void)
 
 void init_x_and_imlib(void)
 {
+	setlocale(LC_ALL, "");
+	if (XSupportsLocale()) {
+		XSetLocaleModifiers("@im=none");
+	}
 	disp = XOpenDisplay(NULL);
 	if (!disp)
 		eprintf("Can't open X display. It *is* running, yeah?");
@@ -137,6 +144,9 @@ void init_x_and_imlib(void)
 	root = RootWindow(disp, DefaultScreen(disp));
 	scr = ScreenOfDisplay(disp, DefaultScreen(disp));
 	xid_context = XUniqueContext();
+
+	XIM im = XOpenIM(disp, NULL, NULL, NULL);
+	input_context = XCreateIC(im, XNInputStyle, XIMPreeditNothing | XIMStatusNothing, NULL);
 
 #ifdef HAVE_LIBXINERAMA
 	init_xinerama();

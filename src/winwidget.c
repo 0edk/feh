@@ -858,6 +858,11 @@ void winwidget_show(winwidget winwid)
 		XMapWindow(disp, winwid->win);
 		if (opt.full_screen)
 			XMoveWindow(disp, winwid->win, 0, 0);
+
+		XSetICValues(input_context, XNClientWindow, winwid->win, NULL);
+		//XSelectInput(disp, winwid->win, ButtonPressMask|StructureNotifyMask|KeyPressMask|KeyReleaseMask);
+		XSetICFocus(input_context);
+
 		/* wait for the window to map */
 		D(("Waiting for window to map\n"));
 		XMaskEvent(disp, StructureNotifyMask, &ev);
