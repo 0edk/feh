@@ -338,7 +338,7 @@ ExifData *exif_get_data(char *path)
 		   path));
 	}
 
-	return (ed);
+	return ed;
 }
 
 
