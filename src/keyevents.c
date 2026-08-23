@@ -465,7 +465,7 @@ void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysy
 			}
 			break;
 		case XK_Escape:
-			/* cancel, revert caption */
+			/* revert caption */
 			winwid->caption_entry = 0;
 			free(FEH_FILE(winwid->file->data)->caption);
 			FEH_FILE(winwid->file->data)->caption = NULL;
@@ -474,8 +474,15 @@ void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysy
 			winwid->bg_pmap_cache = 0;
 			break;
 		case XK_BackSpace:
-			/* backspace */
-			ESTRTRUNC(FEH_FILE(winwid->file->data)->caption, 1);
+			/*
+			 * The C grammar is funny. Labels (e.g., this case block) must preced a statement (e.g., a function call) – a variable declaration is not a statement.
+			 * This load-bearing semicolon satisfies -Wfree-labels; otherwise we'd get "a label can only be part of a statement and a declaration is not a statement".
+			 */
+			;
+			char *caption = FEH_FILE(winwid->file->data)->caption;
+			size_t cpos = strlen(caption);
+			while (--cpos && (caption[cpos] & 0x80) && !(caption[cpos] & 0x40)) {}
+			caption[cpos] = '\0';
 			winwidget_render_image_cached(winwid);
 			break;
 		default:
