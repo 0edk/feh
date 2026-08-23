@@ -383,7 +383,7 @@ void feh_event_handle_keypress(XEvent * ev)
 	}
 
 	kev = (XKeyEvent *) ev;
-	int kbuf_used = Xutf8LookupString(input_context, kev, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
+	unsigned long int kbuf_used = Xutf8LookupString(input_context, kev, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
 	if (kbuf_used < sizeof(kbuf)) {
 		kbuf[kbuf_used] = 0;
 	} else {
