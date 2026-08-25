@@ -592,14 +592,15 @@ void winwidget_render_image(winwidget winwid, int resize, int force_alias)
 			winwidget_update_caption(winwid);
 		if (opt.draw_filename)
 			feh_draw_filename(winwid);
+		if (opt.draw_actions)
+			feh_draw_actions(winwid);
+		/* feh_draw_info must be called before feh_draw_exif */
+		if (opt.draw_info && opt.info_cmd)
+			feh_draw_info(winwid);
 #ifdef HAVE_LIBEXIF
 		if (opt.draw_exif)
 			feh_draw_exif(winwid);
 #endif
-		if (opt.draw_actions)
-			feh_draw_actions(winwid);
-		if (opt.draw_info && opt.info_cmd)
-			feh_draw_info(winwid);
 		if (winwid->errstr)
 			feh_draw_errstr(winwid);
 		if (winwid->file != NULL) {

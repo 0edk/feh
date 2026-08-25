@@ -86,6 +86,8 @@ static char *feh_http_load_image(char *url);
 static char *feh_dcraw_load_image(char *filename);
 static char *feh_magick_load_image(char *filename);
 
+int info_height = 0;
+
 #ifdef HAVE_LIBXINERAMA
 void init_xinerama(void)
 {
@@ -1270,7 +1272,12 @@ void feh_draw_exif(winwidget w)
 
 	}
 
-	gib_imlib_render_image_on_drawable(w->bg_pmap, im, 0, w->h - height, 1, 1, 0);
+	int h_offset = 0;
+	if (opt.draw_info) {
+		h_offset = info_height;
+	}
+
+	gib_imlib_render_image_on_drawable(w->bg_pmap, im, 0, w->h - h_offset - height, 1, 1, 0);
 
 	gib_imlib_free_image_and_decache(im);
 	return;
@@ -1348,6 +1355,8 @@ void feh_draw_info(winwidget w)
 
 	gib_imlib_render_image_on_drawable(w->bg_pmap, im, 0,
 			w->h - height, 1, 1, 0);
+
+	info_height = height;
 
 	gib_imlib_free_image_and_decache(im);
 	return;
