@@ -475,7 +475,7 @@ void feh_event_handle_generic(winwidget winwid, unsigned int state, KeySym keysy
 			break;
 		case XK_BackSpace:
 			/*
-			 * The C grammar is funny. Labels (e.g., this case block) must preced a statement (e.g., a function call) – a variable declaration is not a statement.
+			 * The C grammar is funny. Labels (e.g., this case block) must precede a statement (e.g., a function call) – a variable declaration is not a statement.
 			 * This load-bearing semicolon satisfies -Wfree-labels; otherwise we'd get "a label can only be part of a statement and a declaration is not a statement".
 			 */
 			;
