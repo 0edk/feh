@@ -1,3 +1,11 @@
+Wed, 26 Aug 2026 16:34:23 +0200  Birte Friesel <derf+feh@finalrewind.org>
+
+* Release v3.12.3
+    * Support non-ASCII characters in caption entry mode. Note that feh's
+      default font lacks proper Unicode support, so many symbols will not
+      be rendered correctly. This is on the agenda for an upcoming release.
+    * Fix --draw-exif overwriting the output of --draw-info
+
 Thu, 07 May 2026 19:52:27 +0200  Birte Friesel <derf+feh@finalrewind.org>
 
 * Release v3.12.2
