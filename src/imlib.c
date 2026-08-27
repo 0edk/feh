@@ -63,7 +63,7 @@ magic_t magic = NULL;
 Display *disp = NULL;
 Visual *vis = NULL;
 Screen *scr = NULL;
-XIC input_context;
+XIC input_context = NULL;
 Colormap cm;
 int depth;
 Atom wmDeleteWindow;
@@ -148,7 +148,9 @@ void init_x_and_imlib(void)
 	xid_context = XUniqueContext();
 
 	XIM im = XOpenIM(disp, NULL, NULL, NULL);
-	input_context = XCreateIC(im, XNInputStyle, XIMPreeditNothing | XIMStatusNothing, NULL);
+	if (im != NULL) {
+		input_context = XCreateIC(im, XNInputStyle, XIMPreeditNothing | XIMStatusNothing, NULL);
+	}
 
 #ifdef HAVE_LIBXINERAMA
 	init_xinerama();

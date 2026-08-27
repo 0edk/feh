@@ -369,6 +369,7 @@ void feh_event_handle_keypress(XEvent * ev)
 {
 	int state;
 	char kbuf[20];
+	unsigned long int kbuf_used = 0;
 	KeySym keysym;
 	XKeyEvent *kev;
 	winwidget winwid = NULL;
@@ -383,13 +384,17 @@ void feh_event_handle_keypress(XEvent * ev)
 	}
 
 	kev = (XKeyEvent *) ev;
-	unsigned long int kbuf_used = Xutf8LookupString(input_context, kev, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
+	if (input_context != NULL) {
+		kbuf_used = Xutf8LookupString(input_context, kev, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
+	} else {
+		kbuf_used = XLookupString(&ev->xkey, (char *) kbuf, sizeof(kbuf), &keysym, NULL);
+	}
 	if (kbuf_used < sizeof(kbuf)) {
 		kbuf[kbuf_used] = 0;
 	} else {
 		kbuf[19] = 0;
 	}
-	D(("Xutf8LookupString set kbuf = %s, keysym = %08x\n", kbuf, keysym));
+	D(("X(utf8)LookupString set kbuf = %s, keysym = %08x\n", kbuf, keysym));
 	state = kev->state & (ControlMask | ShiftMask | Mod1Mask | Mod4Mask);
 
 	if (ignore_space(keysym))
