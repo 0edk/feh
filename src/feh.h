@@ -92,10 +92,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #define XY_IN_RECT(x, y, rx, ry, rw, rh) \
 (((x) >= (rx)) && ((y) >= (ry)) && ((x) < ((rx) + (rw))) && ((y) < ((ry) + (rh))))
 
-#define DEFAULT_FONT "yudit/11"
-#define DEFAULT_MENU_FONT "yudit/10"
-#define DEFAULT_FONT_BIG "yudit/12"
-#define DEFAULT_FONT_TITLE "yudit/14"
+#define DEFAULT_FONT "NotoSans-Medium/11"
+#define DEFAULT_MENU_FONT "NotoSans-Medium/10"
+#define DEFAULT_FONT_BIG "NotoSans-Medium/12"
+#define DEFAULT_FONT_TITLE "NotoSans-Medium/14"
 
 enum mode_type { MODE_NORMAL = 0, MODE_PAN, MODE_ZOOM, MODE_ROTATE, MODE_BLUR, MODE_NEXT
 };

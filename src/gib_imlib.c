@@ -706,10 +706,10 @@ gib_imlib_load_font(char *name)
 
    if ((fn = imlib_load_font(name)))
       return fn;
-   weprintf("couldn't load font %s, attempting to fall back to yudit.", name);
-   if ((fn = imlib_load_font("yudit/12")))
+   weprintf("couldn't load font %s, attempting to fall back to NotoSans-Medium.", name);
+   if ((fn = imlib_load_font("NotoSans-Medium/12")))
       return fn;
-   weprintf("failed to even load yudit! Attempting to find any font.");
+   weprintf("failed to even load NotoSans-Medium! Attempting to find any font.");
    return imlib_load_font("*");
 }
 

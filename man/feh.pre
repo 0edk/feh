@@ -2293,6 +2293,13 @@ SOFTWARE.
 .
 .Pp
 .
+.Nm
+bundles the NotoSans font, which is (C) The Noto Project Authors
+.Pq https://github.com/notofonts/latin-greek-cyrillic
+and licensed under the SIL Open Font License, Version 1.1.
+.
+.Pp
+.
 Current developer: Birte Friesel
 .Aq derf@finalrewind.org
 .
