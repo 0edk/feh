@@ -562,6 +562,18 @@ char *feh_printf(char *str, feh_file * file, winwidget winwid, int shell)
 					strncat(ret, buf, ret_size - ret_used);
 				}
 				break;
+			case 'x':
+                                Window root, child;
+                                unsigned int root_x, root_y, win_x, win_y, mask;
+                                XQueryPointer(disp, winwid->win, &root, &child, &root_x, &root_y, &win_x, &win_y, &mask);
+				snprintf(buf, sizeof(buf), "%d", (int)((win_x - winwid->im_x) / winwid->zoom));
+                                strncat(ret, buf, ret_size - ret_used);
+				break;
+			case 'y':
+                                XQueryPointer(disp, winwid->win, &root, &child, &root_x, &root_y, &win_x, &win_y, &mask);
+				snprintf(buf, sizeof(buf), "%d", (int)((win_y - winwid->im_y) / winwid->zoom));
+                                strncat(ret, buf, ret_size - ret_used);
+				break;
 			case 'z':
 				if (winwid) {
 					snprintf(buf, sizeof(buf), "%.2f", winwid->zoom);
